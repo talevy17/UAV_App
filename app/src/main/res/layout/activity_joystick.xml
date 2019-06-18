@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Joystick">
 
-    <com.example.android_app_simulator.Joystick
+    <com.example.ex4.JoystickView
         android:id="@+id/left"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

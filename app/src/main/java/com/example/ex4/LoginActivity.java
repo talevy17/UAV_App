@@ -2,6 +2,7 @@ package com.example.ex4;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         Client.getInstance().connect(((EditText) findViewById(R.id.ip)).getText().toString(),
                 Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString()));
-        // TODO joystick
+        Intent intent = new Intent(this, Joystick.class);
+        startActivity(intent);
     }
 }
