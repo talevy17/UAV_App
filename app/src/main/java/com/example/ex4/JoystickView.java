@@ -19,6 +19,11 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     private JoystickListener joystickCallback;
 
 
+    /**
+     * CTOR based on context and attribute.
+     * @param context
+     * @param att
+     */
     public JoystickView(Context context, AttributeSet att) {
         super(context, att);
         getHolder().addCallback(this);
@@ -27,6 +32,12 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
             joystickCallback = (JoystickListener) context;
     }
 
+    /**
+     * CTOR, based on context, attribute and style.
+     * @param context
+     * @param att
+     * @param style
+     */
     public JoystickView(Context context, AttributeSet att, int style) {
         super(context, att, style);
         getHolder().addCallback(this);
@@ -35,6 +46,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
             joystickCallback = (JoystickListener) context;
     }
 
+    /**
+     * CTOR based on context only.
+     * @param context
+     */
     public JoystickView(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -43,24 +58,47 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
             joystickCallback = (JoystickListener) context;
     }
 
+    /**
+     * sets the dimensions of the circle and draws the centered joystick on creation.
+     * @param holder
+     */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         setDim();
         drawJoystick(centerX, centerY);
     }
 
+    /**
+     * sets the dimensions of the joystick and draws it on change.
+     * @param holder
+     * @param format
+     * @param width
+     * @param height
+     */
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         setDim();
         drawJoystick(centerX, centerY);
     }
 
+    /**
+     * disconnects from the server when the joystick activity shuts down the joystick.
+     * acts as a destructor.
+     * @param holder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Client.getInstance().disconnect();
     }
 
 
+    /**
+     * Configures the parsing of the values based on the movement of the joystick,
+     * and the draw logic, also pokes the onJoystickMoved method of the activity.
+     * @param view
+     * @param motionEvent
+     * @return true.
+     */
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (view.equals(this)) {
             if (motionEvent.getAction() != motionEvent.ACTION_UP) {
@@ -90,6 +128,9 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         return true;
     }
 
+    /**
+     * sets the dimensions of the joystick's circle.
+     */
     private void setDim() {
         centerX = (float) getWidth() / 2;
         centerY = (float) getHeight() / 2;
@@ -97,6 +138,11 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         hatRadius = (float) Math.min(getWidth(), getHeight()) / 5;
     }
 
+    /**
+     * draws the joystick, based upon the movement.
+     * @param x
+     * @param y
+     */
     private void drawJoystick(float x, float y) {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = this.getHolder().lockCanvas();
@@ -110,6 +156,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
+    /**
+     * Interface configures the method to be activated by the activity that acts upon the
+     * joystick movements.
+     */
     public interface JoystickListener {
         void onJoystickMoved(float xPlumbus, float yPlumbus, int source);
     }
