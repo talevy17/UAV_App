@@ -77,8 +77,8 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
      */
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        setDim();
-        drawJoystick(centerX, centerY);
+        //setDim();
+        //drawJoystick(centerX, centerY);
     }
 
     /**
@@ -102,27 +102,26 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (view.equals(this)) {
             if (motionEvent.getAction() != motionEvent.ACTION_UP) {
-                drawJoystick(motionEvent.getX(), motionEvent.getY());
                 //Checking for Out of Bounds
                 float displacement = (float) Math.sqrt
                         (Math.pow(motionEvent.getX() - centerX, 2)
                                 + Math.pow(motionEvent.getY() - centerY, 2));
                 if (displacement < baseRadius) {
                     drawJoystick(motionEvent.getX(), motionEvent.getY());
-                    joystickCallback.onJoystickMoved((centerX - motionEvent.getX()) / baseRadius,
-                            (motionEvent.getY() - centerY) / baseRadius, getId());
+                    joystickCallback.onJoystickMoved((motionEvent.getX() - centerX) / baseRadius,
+                            (motionEvent.getY() - centerY) / baseRadius);
                 } else {
                     float ratio = baseRadius / displacement;
                     float constrainedX = centerX + (motionEvent.getX() - centerX) * ratio;
                     float constrainedY = centerY + (motionEvent.getY() - centerY) * ratio;
                     drawJoystick(constrainedX, constrainedY);
                     joystickCallback.onJoystickMoved((constrainedX - centerX) / baseRadius,
-                            (centerY - constrainedY) / baseRadius, getId());
+                            (constrainedY - centerY) / baseRadius);
 
                 }
             } else {
                 drawJoystick(centerX, centerY);
-                joystickCallback.onJoystickMoved(0, 0, getId());
+                joystickCallback.onJoystickMoved(0, 0);
             }
         }
         return true;
@@ -161,6 +160,6 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
      * joystick movements.
      */
     public interface JoystickListener {
-        void onJoystickMoved(float xPlumbus, float yPlumbus, int source);
+        void onJoystickMoved(float xPlumbus, float yPlumbus);
     }
 }

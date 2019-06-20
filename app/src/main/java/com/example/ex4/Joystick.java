@@ -21,10 +21,9 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
      * Upon every movement of the joystick, sends the new values to the server.
      * @param xPlumbus horizontal value -> the aileron of the plane.
      * @param yPlumbus vertical value -> the elevator of the plane.
-     * @param source
      */
     @Override
-    public void onJoystickMoved(float xPlumbus, float yPlumbus, int source) {
+    public void onJoystickMoved(float xPlumbus, float yPlumbus) {
         Client client = Client.getInstance();
         client.send("set /controls/flight/aileron " + Float.toString(xPlumbus * -1) + "\r\n");
         client.send("set /controls/flight/elevator " + Float.toString(yPlumbus * -1) + "\r\n");
